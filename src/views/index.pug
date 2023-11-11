@@ -1,0 +1,71 @@
+extends layout
+
+block content
+  if username
+    .row
+      .col-6
+        div.text-center.m-3
+          h1 DZ2
+          p Demonstracija napada XSS i Broken access control (Lose kontrole pristupa)
+          h4 Upute
+          p Da bi bilo moguce napraviti demonstraciju bilo kojeg napada, potrebno se prvo prijaviti (postojeci korisnik) ili registrirati s korisnickim imenom i lozinkom.
+          p
+            | 1. Kako bi izveli xss napad, kao poruku u Nova Poruka (Nalazi se ispod uputa) potrebno je unijeti neku scriptu koja ce napraviti nesto zlocudno. Skripta ce se izvrsiti ukoliko zastita od xss-a nije ukljucena.
+            | Ako se pritisne gumb 'Ukljuci zastitu od xss-a', stranica ce se ponovno ucitati, ali se skripta nece izvrsiti (i cookie ce imate http only zastavicu)
+            br
+            | Primjeri skripte koje mozete unijeti:
+            br
+            | #{'<script>alert(\'XSS attack\');</script>'}
+            br
+            | ili
+            br
+            | #{'<script>alert(document.cookie);</script>'}
+            br
+          p
+            | 2. Kako bi demonstrirali broken access control (Losu kontrolu pristupa), mozemo otici u poruke korisnika (gumb 'My Messages'). Tamo cemo vidjeti svoje poruke koje smo dodali.
+            | Takoder mozemo vidjeti da je URL /messages/user/{korisnikovID}. Ako kontrola pristupa nije ukljucena (gumb 'Ukljuci kontrolu pristupa'), mozemo unijeti neki id umjesto vlastitog
+            | i probati pregledati poruke drugog korisnika (ako postoji korisnik s tim id-em). Nakon sto se ukljuci kontrola pristupa stranica ce se osvjeziti i vise nece biti moguce gledati
+            | poruke drugog korisnika vec cemo dobiti 403.
+
+          form(action='/messages/user/' + userId, method='post')
+            div.form-group.mx-4.mt-5
+                label(for='message') Nova Poruka:
+                input(type='text', id='message', name='message', class='form-control', required=true)
+            button.mt-2(type='submit', class='btn btn-success') Dodaj poruku
+
+      .col-6
+        div.text-center.m-4
+          h2 Zadnje dodane poruke
+          ul.list-group
+            each message in messages
+              li.list-group-item
+                if xssProtection
+                  // Escape the actual text inside so the scripts cant be executed
+                  | #{message.text}
+                else
+                  // No escape - scripts are executed
+                  | !{message.text}
+
+  else
+    div.text-center.m-4
+      h1 DZ2
+      p Demonstracija napada XSS i Broken access control (Lose kontrole pristupa)
+      h4 Upute
+      p Da bi bilo moguce napraviti demonstraciju bilo kojeg napada, potrebno se prvo prijaviti (postojeci korisnik) ili registrirati s korisnickim imenom i lozinkom.
+      p
+        | 1. Kako bi izveli xss napad, kao poruku u Nova Poruka potrebno je unijeti neku scriptu koja ce napraviti nesto zlocudno. Skripta ce se izvrsiti ukoliko zastita od xss-a nije ukljucena.
+        | Ako se pritisne gumb 'Ukljuci zastitu od xss-a', stranica ce se ponovno ucitati, ali se skripta nece izvrsiti (i cookie ce imate http only zastavicu)
+        br
+        | Primjeri skripte koje mozete unijeti:
+        br
+        | #{'<script>alert(\'XSS attack\');</script>'}
+        br
+        | ili
+        br
+        | #{'<script>alert(document.cookie);</script>'}
+        br
+      p
+        | 2. Kako bi demonstrirali broken access control (Losu kontrolu pristupa), mozemo otici u poruke korisnika (gumb 'My Messages'). Tamo cemo vidjeti svoje poruke koje smo dodali.
+        | Takoder mozemo vidjeti da je URL /messages/user/{korisnikovID}. Ako kontrola pristupa nije ukljucena (gumb 'Ukljuci kontrolu pristupa'), mozemo unijeti neki id umjesto vlastitog
+        | i probati pregledati poruke drugog korisnika (ako postoji korisnik s tim id-em). Nakon sto se ukljuci kontrola pristupa stranica ce se osvjeziti i vise nece biti moguce gledati
+        | poruke drugog korisnika vec cemo dobiti 403.

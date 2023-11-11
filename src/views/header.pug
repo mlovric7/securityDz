@@ -1,0 +1,31 @@
+nav.navbar.navbar-expand-lg.navbar-light.bg-light-gray
+    div.container-fluid
+        button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation")
+            span.navbar-toggler-icon
+        div.collapse.navbar-collapse.justify-content-center.navbar-font.m-2(id='navbarNav')
+            ul.nav.nav-pills
+                li.nav-item
+                    a.nav-link(class=currentPage === "home" ? "active" : "" href="/") Home
+                if username
+                    li.nav-item
+                        a.nav-link(class=currentPage === "messages" ? "active" : "" href="/messages/user/" + userId) Moje poruke
+                    li.nav-item
+                        a.nav-link(href="/logout") Odjava
+                unless username
+                    li.nav-item
+                        a.nav-link(class=currentPage === "sign in" ? "active" : "" href="/login") Prijava
+                    li.nav-item
+                        a.nav-link(class=currentPage === "sign up" ? "active" : "" href="/signup") Registracija
+
+                if xssProtection
+                    li.nav-item
+                        a.nav-link(class="active" href="/attacks/xss") Iskljuci zastitu od xss-a
+                else
+                    li.nav-item
+                        a.nav-link(href="/attacks/xss") Ukljuci zastitu od xss-a
+                if accessControl
+                    li.nav-item
+                        a.nav-link(class="active" href="/attacks/access-control") Iskljuci kontrolu pristupa
+                else
+                    li.nav-item
+                        a.nav-link(href="/attacks/access-control") Ukljuci kontrolu pristupa

@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    h2 Login
+
+    if error
+        div.alert.alert-danger= error
+
+    form(action='/login', method='post')
+        div.form-group
+            label(for='username') Username:
+            input(type='text', id='username', name='username', class='form-control', required=true)
+        div.form-group.my-2
+            label(for='password') Password:
+            input(type='password', id='password' name='password', class='form-control', required=true)
+        button(type='submit', class='btn btn-primary') Login

@@ -1,2 +1,2 @@
-# securityDz
-2. Projekt na predmetu NRPPZW
+# pracenjeNatjecanja
+1. Projekt na predmetu NRPPZW

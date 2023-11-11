@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    if messages.length !== 0
+        div.text-center.m-4
+            h2 Moje poruke
+            ul.list-group
+                each message in messages
+                    li.list-group-item
+                        if xssProtection
+                            // Escape the actual text inside so the scripts cant be executed
+                            | #{message.text}
+                        else
+                            // No escape - scripts are executed
+                            | !{message.text}
+    else
+        div.text-center.m-4
+            h2 Nemate dodanih poruka

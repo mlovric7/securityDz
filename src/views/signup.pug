@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    h2 Sign Up
+
+    if error
+        div.alert.alert-danger= error
+
+    form(action='/signup', method='post')
+        div.form-group
+            label(for='username') Username:
+            input(type='text', id='username', name='username', class='form-control', required=true)
+        div.form-group.mt-2
+            label(for='password') Password:
+            input(type='password', id='password' name='password', class='form-control', required=true)
+        button.mt-2(type='submit', class='btn btn-success') Sign Up
