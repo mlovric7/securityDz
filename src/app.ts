@@ -11,6 +11,7 @@ import messagesRouter from './routes/messages'
 import dotenv from 'dotenv'
 import session from 'express-session'
 import {setUsername} from "./utils/username";
+import pool from "./database/db";
 
 declare module 'express-session' {
     interface SessionData {
@@ -52,6 +53,9 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 app.use(session({
+    store: new (require('connect-pg-simple')(session))({
+        pool: pool
+    }),
     // @ts-ignore
     secret: process.env.SECRET,
     resave: false,
