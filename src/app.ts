@@ -51,6 +51,7 @@ app.set('port', port);
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+// app.set('trust proxy', 1)
 
 app.use(session({
     store: new (require('connect-pg-simple')(session))({
@@ -60,7 +61,8 @@ app.use(session({
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true, httpOnly: true }
+    proxy: true,
+    cookie: { secure: true, httpOnly: true, sameSite: 'none' }
 }))
 
 function addDataToResponse(req: Request, res: Response, next: NextFunction) {
